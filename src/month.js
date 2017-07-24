@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import styled, {css} from 'styled-components'
 import InfiniteList from 'components/infinite_list'
 import auto_bind from 'common/auto_bind'
-import moment from 'common/moment'
+import moment from 'moment'
 import event_system from 'common/event_system'
 import {range, capitalize_first_letter, debounce} from 'common/utilities'
 import {color} from 'common/styles'
@@ -35,7 +35,7 @@ export default class Month extends Component {
   render_day(index) {
     return (
       <WeekDay key={index}>
-        {capitalize_first_letter(moment().startOf('week').add(index, 'day').format('calendar-week'))}
+        {capitalize_first_letter(moment().startOf('week').add(index, 'day').format('dddd'))}
       </WeekDay>
     )
   }

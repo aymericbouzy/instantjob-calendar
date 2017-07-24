@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import styled, {css} from 'styled-components'
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/lib/md'
+import moment from 'common/moment'
 import Month from './month'
 import Week from './week'
 import auto_bind from 'common/auto_bind'
 import {color, link} from 'common/styles'
 import event_system from 'common/event_system'
-import moment from 'common/moment'
 import {capitalize_first_letter} from 'common/utilities'
 
 export default class Calendar extends Component {
@@ -52,16 +52,14 @@ export default class Calendar extends Component {
     return (
       <Container>
         <Header>
-          <Side>
-            <Action onClick={this.show_month} selected={month_view}>
-              Mois
-            </Action>
-            <Action onClick={this.show_week} selected={!month_view}>
-              Semaine
-            </Action>
-            <Navigation month_view={month_view}/>
-            {children}
-          </Side>
+          <Action onClick={this.show_month} selected={month_view}>
+            Mois
+          </Action>
+          <Action onClick={this.show_week} selected={!month_view}>
+            Semaine
+          </Action>
+          <Navigation month_view={month_view}/>
+          {children}
         </Header>
         <View>
           {missions}
@@ -155,13 +153,10 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-`
-const Side = styled.div`
-  display: flex;
-  align-items: center;
+  justify-content: flex-end;
   font-weight: 500;
   color: ${color('black', 'light')};
+  background-color: red;
   font-size: 16px;
 `
 const Action = styled.div`

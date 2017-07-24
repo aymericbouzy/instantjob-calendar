@@ -35,7 +35,7 @@ export default class InfiniteList extends Component {
   }
 
   update_dimensions() {
-    let height = this.wrapper.height
+    let height = this.wrapper.clientHeight
     if (height !== this.state.height) {
       this.setState({height})
     }
