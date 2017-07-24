@@ -8,7 +8,7 @@ This is the calendar used by [InstantJob](https://instantjob.fr) for displaying 
 
 ## Example
 
-```
+```jsx
 import React from 'react'
 import Calendar from 'instantjob-calendar'
 
@@ -29,7 +29,7 @@ export default ({missions}) => (
 `missions` is a list of objects with an `events` key, itself a list of objects with
 a `start` and `end` keys (datetime values that `moment` understands)
 
-```
+```js
 missions = [{
   events: [{
     start: "2017-11-27T11:00:00.000+01:00",
