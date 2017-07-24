@@ -98,7 +98,10 @@ class Navigation extends Component {
   }
 
   get_time() {
-    const {week} = this.state
+    let {week} = this.state
+    if (!week) {
+      week = moment()
+    }
     if (this.props.month_view) {
       return capitalize_first_letter(week.format('MMMM'))
     }

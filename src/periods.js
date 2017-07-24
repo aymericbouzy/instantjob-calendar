@@ -44,7 +44,7 @@ export default class Periods extends Component {
   }
 }
 
-const Period = ({start, end, onClick, color, icon, title, information}) => (
+export const Period = ({start, end, onClick, color, icon, title, information}) => (
   <PeriodContainer onClick={onClick}>
     <Status>
       <Badge color={color}>
