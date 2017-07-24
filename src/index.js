@@ -156,7 +156,7 @@ const Header = styled.div`
   justify-content: flex-end;
   font-weight: 500;
   color: ${color('black', 'light')};
-  background-color: red;
+  min-height: 65px;
   font-size: 16px;
 `
 const Action = styled.div`
