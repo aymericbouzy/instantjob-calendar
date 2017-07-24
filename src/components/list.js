@@ -22,12 +22,12 @@ export default class InfiniteList extends Component {
 
   componentDidMount() {
     this.update_dimensions()
-    $(window).resize(this.update_dimensions)
+    window.addEventListener('resize', this.update_dimensions)
     this.infinite_dom = ReactDOM.findDOMNode(this.infinite_list)
   }
 
   componentWillUnmount() {
-    $(window).off('resize', this.update_dimensions)
+    window.removeEventListener('resize', this.update_dimensions)
   }
 
   componentDidUpdate() {
@@ -35,7 +35,7 @@ export default class InfiniteList extends Component {
   }
 
   update_dimensions() {
-    let height = $(this.wrapper).height()
+    let height = this.wrapper.height
     if (height !== this.state.height) {
       this.setState({height})
     }

@@ -1,5 +1,4 @@
 import {set_from_array} from './utilities'
-import {DEV} from './constants'
 
 const react_properties_set = set_from_array([
   'constructor',
@@ -47,7 +46,6 @@ export default function auto_bind(component) {
   .forEach((property) => {
     let descriptor = Object.getOwnPropertyDescriptor(prototype, property)
     if (descriptor === undefined) {
-      DEV && console.warn(`Autobind: "${method}" method not found in class.`)
       return
     }
     if (typeof descriptor.value !== 'function') {

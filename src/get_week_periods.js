@@ -1,10 +1,9 @@
 import {
   make_memoized, property_getter, range, hash_with_key, flatten_array, split_array,
-  find_optimum_in_sorted_array,
+  find_optimum_in_sorted_array, make_periods, make_slots,
 } from 'common/utilities'
 import moment from 'common/moment'
-import {make_periods, make_slots} from 'common/calendar'
-import {tolerant_selector} from 'selectors/base'
+import tolerant_selector from 'common/tolerant_selector'
 
 const get_children_periods = tolerant_selector(
   property_getter('children'),

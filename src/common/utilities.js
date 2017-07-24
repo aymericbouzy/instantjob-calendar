@@ -1,4 +1,5 @@
 import 'whatwg-fetch'
+import moment from './moment'
 
 export function range(arg1, arg2, step = 1) {
   let start, end
@@ -526,3 +527,51 @@ export function filter_set(set, keep) {
 export function hash_each(hash, each) {
   Object.keys(hash || {}).forEach((key) => each(key, hash[key]))
 }
+
+const make_period_from_event = (e) => ({is_period: true, start: moment(e.start), end: moment(e.end), events: [e], full_days: e.full_days})
+
+export function intersecting_periods_interval(periods, start, end) {
+  let lower = find_optimum_in_sorted_array(periods, (period) => period.end.isAfter(start)) + 1
+  let upper = periods.length - 1 - find_optimum_in_sorted_array(periods.reverse(), (period) => period.start.isBefore(end))
+  periods.reverse()
+  return {lower, upper}
+}
+
+export const make_periods = (events) => {
+  let events_array = array_from_hash(events)
+  if (events_array.length == 0) {
+    return []
+  } else {
+    return events_array.slice(1).reduce((periods, e) => {
+      let extended_start = moment(e.start).subtract(1, 'minute')
+      let extended_end = moment(e.end).add(1, 'minute')
+      let {lower, upper} = intersecting_periods_interval(periods, extended_start, extended_end)
+      let merging_periods = periods.slice(lower, upper)
+      return [
+        ...periods.slice(0, lower),
+        {
+          is_period: true,
+          start: merging_periods.length == 0 || merging_periods[0].start.isAfter(e.start) ? moment(e.start) : merging_periods[0].start,
+          end: merging_periods.length == 0 || merging_periods.slice(-1)[0].end.isBefore(e.end) ? moment(e.end) : merging_periods.slice(-1)[0].end,
+          full_days: e.full_days && for_all(merging_periods, (period) => period.full_days),
+          events: [...flatten_array(merging_periods.map((period) => period.events)), e],
+        },
+        ...periods.slice(upper)
+      ]
+    }, [make_period_from_event(events_array[0])])
+  }
+}
+
+export const make_slots = (periods) => flatten_array(
+  periods.map(({start, end, ...period}) => {
+    let current = moment(start).add(1, 'day').startOf('day'), previous = start
+    const periods = []
+    while (current.isBefore(end)) {
+      periods.push({start: previous, end: current, ...period})
+      previous = current
+      current = moment(current).add(1, 'day')
+    }
+    periods.push({start: previous, end, ...period})
+    return periods
+  })
+)
