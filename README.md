@@ -1,31 +1,54 @@
-# Boilerplate for creating React Npm packages with ES2015
+# Calendar for displaying shifts
 
-The package is based on [npm-base](https://github.com/kadirahq/npm-base) package by [Kadira](https://github.com/kadirahq) which is really great when you want to prepare Npm package. This one is prepared to be used as a starter point for React components which needs to be published on Npm.
+This is the calendar used by [InstantJob](https://instantjob.fr) for displaying information about shifts.
 
-It includes linting with [ESLint](http://eslint.org/) and testing with [Mocha](https://mochajs.org/), [Enzyme](http://airbnb.io/enzyme/) and [JSDOM](https://github.com/tmpvar/jsdom).
+## Installation
 
-Also there is of course ES6 transpilation.
+`npm install --save instantjob-calendar`
 
-## Usage
+## Example
 
-1. Clone this repo
-2. Inside cloned repo run `npm install && rm -rf .git && git init` and update `package.json` with your package name.
-3. If you want to run tests: `npm test` or `npm run testonly` or `npm run test-watch`. You need to write tests in `__tests__` folder. You need at least Node 4 on your machine to run tests.
-4. If you want to run linting: `npm test` or `npm run lint`. Fix bugs: `npm run lint-fix`. You can adjust your `.eslintrc` config file.
-5. If you want to run transpilation to ES5 in `dist` folder: `npm run prepublish` (standard npm hook).
+```
+import React from 'react'
+import Calendar from 'instantjob-calendar'
 
-## CSS and preprocessors
+export default ({missions}) => (
+  <Calendar
+    missions={missions}
+    get_mission_elements={({title, color, icon, informations, onClick}) => {
+      return {title, color, icon, informations, onClick}
+    }}
+  />
+)
+```
 
-For more information check out this thread: [#5](https://github.com/juliancwirko/react-npm-boilerplate/issues/5)
+## Props API
 
-## Blog post about it:
+### `missions`
 
-- [Creating React NPM packages with ES2015](http://julian.io/creating-react-npm-packages-with-es2015/)
+`missions` is a list of objects with an `events` key, itself a list of objects with
+a `start` and `end` keys (datetime values that `moment` understands)
 
-## Also check out
+```
+missions = [{
+  events: [{
+    start: "2017-11-27T11:00:00.000+01:00",
+    end: "2017-11-27T15:00:00.000+01:00",
+  }],
+}]
+```
 
-- [React Alert UI component](https://github.com/juliancwirko/react-s-alert)
-- [React project boilerplate with Webpack, HMR, React Router](https://github.com/juliancwirko/react-boilerplate)
+### `get_mission_elements`
+
+`get_mission_elements` is a function that takes as parameter the `mission` object
+from the `missions` props and returns an object describing how the mission card
+should look. It has 5 possible keys:
+1. `title` is a string
+2. `color` is a string for the round icon
+3. `icon` is a react element supposed to show an icon (for instance `<MdDone />`,
+   see `react-icons/lib/md`, can also be a string, such as `'?'`)
+4. `information` allows to display additional informations next to the time
+5. `onClick` is a function called on clicking the mission card.
 
 ## License
 
