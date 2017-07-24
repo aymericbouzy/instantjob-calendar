@@ -23,7 +23,7 @@
         "no-unused-expressions": 0,
         "no-void": 2,
         "brace-style": [2, "1tbs"],
-        "camelcase": [1, {"properties": "never"}],
+        "camelcase": [0, {"properties": "never"}],
         "consistent-return": 0,
         "comma-style": [2, "last"],
         "complexity": [1, 12],
