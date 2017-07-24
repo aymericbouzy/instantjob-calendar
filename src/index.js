@@ -1,33 +1,20 @@
 import React, {Component} from 'react'
 import styled, {css} from 'styled-components'
-import {connect} from 'react-redux'
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/lib/md'
-import FilterableList from 'components/filterable_list/filterable_list'
-import {get_filters_and_deals} from 'components/deals_list'
-import Filters from 'components/filterable_list/filters'
-import FiltersTitle from 'components/filterable_list/filters_title'
-import SidePanel from 'components/utils/side_panel'
-import Button from 'components/utils/button'
-import {get_initial_state} from 'components/deals_list'
 import Month from './month'
 import Week from './week'
 import auto_bind from 'common/auto_bind'
-import persistent_state from 'common/persistent_state'
 import {color, link} from 'common/styles'
 import event_system from 'common/event_system'
 import moment from 'common/moment'
 import {capitalize_first_letter} from 'common/utilities'
-import {get_missions_fields} from 'selectors/fields'
-import {get_recruiters} from 'selectors/recruiters'
 
-class Calendar extends Component {
+export default class Calendar extends Component {
   constructor(props) {
     super(props)
-    this.state = persistent_state.get(props.persistent_state_key, {
-      ...FilterableList.initial_state,
-      ...get_initial_state(props),
+    this.state = {
       month_view: true,
-    })
+    }
     auto_bind(this)
   }
 
@@ -37,7 +24,6 @@ class Calendar extends Component {
 
   componentWillUnmount() {
     this.unregister_show_week()
-    persistent_state.store(this.props.persistent_state_key, this.state)
   }
 
   static defaultProps = {
@@ -51,33 +37,6 @@ class Calendar extends Component {
     },
   }
 
-  set_state(arg) {
-    this.setState(arg)
-  }
-
-  get_filters_and_missions() {
-    const {missions, fields, workplaces, recruiters, get_mission_elements} = this.props
-    const {deals: filtered_missions, filters} = get_filters_and_deals({
-      deals: missions,
-      fields,
-      workplaces,
-      recruiters,
-      state: this.state,
-      setState: this.set_state,
-    })
-    return {
-      missions: filtered_missions.map((mission) => ({
-        ...mission,
-        ...get_mission_elements(mission),
-      })),
-      filters,
-    }
-  }
-
-  open_filters() {
-    this.filters.open()
-  }
-
   show_month() {
     this.setState({month_view: true})
   }
@@ -87,19 +46,12 @@ class Calendar extends Component {
   }
 
   render() {
-    const {action, other_eventables} = this.props
-    const {missions, filters} = this.get_filters_and_missions()
+    const {missions, children} = this.props
     const {month_view} = this.state
     const View = month_view ? Month : Week
     return (
       <Container>
-        <Filters component={SidePanel} componentRef={(filters) => this.filters = filters}>
-          {filters}
-        </Filters>
         <Header>
-          <ToggleFilters onClick={this.open_filters}>
-            <FiltersTitle />
-          </ToggleFilters>
           <Side>
             <Action onClick={this.show_month} selected={month_view}>
               Mois
@@ -108,14 +60,11 @@ class Calendar extends Component {
               Semaine
             </Action>
             <Navigation month_view={month_view}/>
-            <Button {...action} />
+            {children}
           </Side>
         </Header>
         <View>
-          {[
-            ...missions,
-            ...other_eventables,
-          ]}
+          {missions}
         </View>
       </Container>
     )
@@ -151,16 +100,15 @@ class Navigation extends Component {
   get_time() {
     const {week} = this.state
     if (this.props.month_view) {
-      return capitalize_first_letter(week.format("MMMM"))
-    } else {
-      const start = moment(week).startOf('week'), end = moment(week).endOf('week')
-      return `${start.format("D MMM")} - ${end.format("D MMM")}`
+      return capitalize_first_letter(week.format('MMMM'))
     }
+    const start = moment(week).startOf('week'), end = moment(week).endOf('week')
+    return `${start.format('D MMM')} - ${end.format('D MMM')}`
   }
 
   componentDidMount() {
     this.stop_retrieving_calendar_week = event_system.retrieve(
-      `calendar-week`,
+      'calendar-week',
       (week) => this.setState({week})
     )
   }
@@ -170,7 +118,7 @@ class Navigation extends Component {
   }
 
   navigate_to(day) {
-    event_system.post(`calendar-week`, moment(day).startOf('week'))
+    event_system.post('calendar-week', moment(day).startOf('week'))
   }
 
   render() {
@@ -192,14 +140,6 @@ class Navigation extends Component {
     )
   }
 }
-
-export default connect(
-  (state) => ({
-    fields: get_missions_fields(state),
-    workplaces: state.missions.workplaces,
-    recruiters: get_recruiters(state),
-  })
-)(Calendar)
 
 const Container = styled.div`
   flex: 1;

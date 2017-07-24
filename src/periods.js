@@ -21,15 +21,16 @@ export default class Periods extends Component {
 
   show_week() {
     const week = moment(this.props.periods[0].start).startOf('week')
-    event_system.post(`calendar-week`, week)
-    event_system.trigger(`calendar-show-week`)
+    event_system.post('calendar-week', week)
+    event_system.trigger('calendar-show-week')
   }
 
   render() {
     const {ellipsis, periods} = this.props
     if (periods.length == 0) {
       return null
-    } else if (ellipsis && periods.length > ellipsis) {
+    }
+    if (ellipsis && periods.length > ellipsis) {
       return (
         <Container>
           {this.render_periods(periods.slice(0, ellipsis - 1))}
@@ -38,9 +39,8 @@ export default class Periods extends Component {
           </Ellipsis>
         </Container>
       )
-    } else {
-      return this.render_periods(periods)
     }
+    return this.render_periods(periods)
   }
 }
 
@@ -69,13 +69,13 @@ const period_height = 48
 const status_radius = 40
 function display_period(start, end) {
   if (end.diff(start, 'hour') == 24) {
-    return "Toute la journée"
+    return 'Toute la journée'
   }
   end = moment(end).add(1, 'second').startOf('minute')
   const start_hour = start.hours()
   const end_hour = end.hours() + 24 * end.diff(moment(start).startOf('day'), 'days')
-  const start_minutes = start.minutes() ? start.format("mm") : ""
-  const end_minutes = end.minutes() ? end.format("mm") : ""
+  const start_minutes = start.minutes() ? start.format('mm') : ''
+  const end_minutes = end.minutes() ? end.format('mm') : ''
   return `${start_hour}h${start_minutes} - ${end_hour}h${end_minutes}`
 }
 

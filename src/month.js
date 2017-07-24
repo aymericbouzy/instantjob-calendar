@@ -20,7 +20,7 @@ export default class Month extends Component {
   }
 
   componentDidMount() {
-    this.stop_retrieving_calendar_week = event_system.retrieve(`calendar-week`, (week) => {
+    this.stop_retrieving_calendar_week = event_system.retrieve('calendar-week', (week) => {
       if (week !== this.week) {
         this.ignore_scroll = true
         this.list.scroll_to_item(this.get_index(week))
@@ -35,7 +35,7 @@ export default class Month extends Component {
   render_day(index) {
     return (
       <WeekDay key={index}>
-        {capitalize_first_letter(moment().startOf('week').add(index, 'day').format("dddd"))}
+        {capitalize_first_letter(moment().startOf('week').add(index, 'day').format('calendar-week'))}
       </WeekDay>
     )
   }
@@ -63,7 +63,7 @@ export default class Month extends Component {
     } else {
       this.current_scroll_top = null
       this.week = moment().add(scroll_top / week_height, 'week').endOf('week')
-      event_system.post(`calendar-week`, this.week)
+      event_system.post('calendar-week', this.week)
     }
   })
 
@@ -94,10 +94,9 @@ class Week extends Component {
   get_day_date(index) {
     const day = moment(this.props.week).add(index, 'day')
     if (day.date() == 1) {
-      return day.format("D MMMM")
-    } else {
-      return day.format("D")
+      return day.format('D MMMM')
     }
+    return day.format('D')
   }
 
   render_day(periods, index) {
