@@ -88,6 +88,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  position: relative;
 `
 const Ellipsis = styled.div`
   height: 40px;
@@ -99,6 +100,7 @@ const Ellipsis = styled.div`
   font-size: 18px;
 `
 const PeriodContainer = styled.div`
+  ${ellipsis('calc(100% - 10px)')}
   ${({onClick}) => onClick ? link : ''}
   height: ${period_height}px;
   border-bottom: solid 1px ${color('black', 'translucent')};
