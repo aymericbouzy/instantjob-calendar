@@ -57,11 +57,11 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {children} = this.props
+    const {children, className, style} = this.props
     const {month_view} = this.state
     const View = month_view ? Month : Week
     return (
-      <Container>
+      <Container className={className} style={style}>
         <Header>
           <Action onClick={this.show_month} selected={month_view}>
             Mois
