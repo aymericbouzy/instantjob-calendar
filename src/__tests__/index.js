@@ -14,6 +14,9 @@ describe('Calendar', () => {
   })
 
   it('consumes props', () => {
+    const get_mission_elements = sinon.spy((mission) => {
+      return {title: 'Hey Ho', color: 'black', icon: '@'}
+    })
     const wrapper = mount(
       <Calendar
         missions={[
@@ -22,11 +25,10 @@ describe('Calendar', () => {
             end: moment().add(2, 'days'),
           }]}
         ]}
-        get_mission_elements={(mission) => {
-          return {title: 'Hey Ho', color: 'black', icon: '@'}
-        }}
+        get_mission_elements={get_mission_elements}
       />
     )
+    expect(get_mission_elements.calledOnce).to.equal(true)
   })
 
 })

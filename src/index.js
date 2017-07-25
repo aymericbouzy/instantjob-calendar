@@ -8,6 +8,17 @@ import auto_bind from 'common/auto_bind'
 import {color, link} from 'common/styles'
 import event_system from 'common/event_system'
 import {capitalize_first_letter} from 'common/utilities'
+import tolerant_selector from 'common/tolerant_selector'
+
+const get_raw_missions = (props) => props.missions
+const get_raw_get_mission_elements = (props) => props.get_mission_elements
+const get_missions = tolerant_selector(
+  [get_raw_missions, get_raw_get_mission_elements],
+  (missions, get_mission_elements) => missions.map((mission) => ({
+    ...mission,
+    ...get_mission_elements(mission),
+  }))
+)
 
 export default class Calendar extends Component {
   constructor(props) {
@@ -46,7 +57,7 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {missions, children} = this.props
+    const {children} = this.props
     const {month_view} = this.state
     const View = month_view ? Month : Week
     return (
@@ -62,7 +73,7 @@ export default class Calendar extends Component {
           {children}
         </Header>
         <View>
-          {missions}
+          {get_missions(this.props)}
         </View>
       </Container>
     )
