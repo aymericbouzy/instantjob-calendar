@@ -50,6 +50,10 @@ should look. It has 5 possible keys:
 4. `information` allows to display additional informations next to the time
 5. `onClick` is a function called on clicking the mission card.
 
+### `className`, `style`
+
+Style your component the way you want.
+
 ## License
 
 MIT
