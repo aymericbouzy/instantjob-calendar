@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   make_memoized, property_getter, range, hash_with_key, flatten_array, split_array,
   find_optimum_in_sorted_array, make_periods, make_slots,
