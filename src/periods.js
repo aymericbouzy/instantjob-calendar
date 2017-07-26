@@ -67,7 +67,7 @@ export const Period = ({start, end, onClick, color, icon, title, information}) =
 
 const period_height = 48
 const status_radius = 40
-function display_period(start, end) {
+export function display_period(start, end) {
   if (end.diff(start, 'hour') == 24) {
     return 'Toute la journée'
   }

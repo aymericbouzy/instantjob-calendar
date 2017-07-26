@@ -6,6 +6,14 @@ import sinon from 'sinon'
 import moment from 'common/moment'
 
 import Calendar from '../index'
+import {display_period} from '../periods'
+
+const missions = [
+  {events: [{
+    start: moment().add(1, 'day'),
+    end: moment().add(2, 'days'),
+  }]}
+]
 
 describe('Calendar', () => {
 
@@ -19,16 +27,23 @@ describe('Calendar', () => {
     })
     const wrapper = mount(
       <Calendar
-        missions={[
-          {events: [{
-            start: moment().add(1, 'day'),
-            end: moment().add(2, 'days'),
-          }]}
-        ]}
+        missions={missions}
         get_mission_elements={get_mission_elements}
       />
     )
     expect(get_mission_elements.calledOnce).to.equal(true)
   })
 
+  it('uses render_mission when provided', () => {
+    const render_mission = sinon.spy((mission, {start, end}) => {
+      return `Hey Ho ! ${display_period(start, end)}`
+    })
+    const wrapper = mount(
+      <Calendar
+        missions={missions}
+        render_mission={render_mission}
+      />
+    )
+    expect(render_mission.calledOnce).to.equal(true)
+  })
 })
