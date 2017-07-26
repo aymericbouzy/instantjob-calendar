@@ -4,14 +4,21 @@ import {
 } from 'common/utilities'
 import moment from 'common/moment'
 import tolerant_selector from 'common/tolerant_selector'
+import Period from './period'
 
 const get_children_periods = tolerant_selector(
-  property_getter('children'),
-  (children) => flatten_array(children.map(
+  [property_getter('children'), property_getter('render_shift')],
+  (children, render_shift) => flatten_array(children.map(
     ({events, ...child}) => make_periods(hash_with_key(events)).map(({start, end}) => ({
       ...child,
       start,
       end,
+      render() {
+        if (typeof render_shift === 'function') {
+          return render_shift(child, {start, end})
+        }
+        return <Period {...({...child, start, end})} />
+      },
     }))
   ))
 )

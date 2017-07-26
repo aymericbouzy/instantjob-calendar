@@ -7,13 +7,11 @@ import Week from './week'
 import auto_bind from 'common/auto_bind'
 import {color, link} from 'common/styles'
 import event_system from 'common/event_system'
-import {capitalize_first_letter} from 'common/utilities'
+import {capitalize_first_letter, property_getter} from 'common/utilities'
 import tolerant_selector from 'common/tolerant_selector'
 
-const get_raw_missions = (props) => props.missions
-const get_raw_get_mission_elements = (props) => props.get_mission_elements
 const get_missions = tolerant_selector(
-  [get_raw_missions, get_raw_get_mission_elements],
+  [property_getter('missions'), property_getter('get_mission_elements')],
   (missions, get_mission_elements) => missions.map((mission) => ({
     ...mission,
     ...get_mission_elements(mission),
@@ -24,7 +22,7 @@ export default class Calendar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      month_view: true,
+      month_view: props.initial_view == 'month',
     }
     auto_bind(this)
   }
@@ -41,11 +39,9 @@ export default class Calendar extends Component {
     missions: [],
     other_eventables: [],
     get_mission_elements() {
-      return {
-        icon: '!',
-        color: 'pink',
-      }
+      return {}
     },
+    initial_view: 'month',
   }
 
   show_month() {
@@ -57,7 +53,7 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {children, className, style} = this.props
+    const {children, className, style, render_shift} = this.props
     const {month_view} = this.state
     const View = month_view ? Month : Week
     return (
@@ -72,7 +68,7 @@ export default class Calendar extends Component {
           <Navigation month_view={month_view}/>
           {children}
         </Header>
-        <View>
+        <View render_shift={render_shift}>
           {get_missions(this.props)}
         </View>
       </Container>

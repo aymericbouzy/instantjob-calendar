@@ -38,17 +38,20 @@ missions = [{
 }]
 ```
 
-### `get_mission_elements`
+### `render_shift`
 
-`get_mission_elements` is a function that takes as parameter the `mission` object
-from the `missions` props and returns an object describing how the mission card
-should look. It has 5 possible keys:
-1. `title` is a string
-2. `color` is a string for the round icon
-3. `icon` is a react element supposed to show an icon (for instance `<MdDone />`,
-   see `react-icons/lib/md`, can also be a string, such as `'?'`)
-4. `information` allows to display additional informations next to the time
-5. `onClick` is a function called on clicking the mission card.
+`render_shift` is a function that takes as parameter the `mission` object
+from the `missions` props and an event for which the mission needs to be rendered and returns a rendered react element.
+
+```js
+render_shift = (mission, {start, end}) => (
+  <Shift
+    {...mission}
+    start={start}
+    end={end}
+  />
+)
+```
 
 ### `className`, `style`
 
