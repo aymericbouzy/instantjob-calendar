@@ -102,7 +102,8 @@ const Content = styled.div`
   border-left: ${border};
   background-color: ${color('black', 'translucent')};
   flex: 1;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   &:last-of-type {
     border-right: ${border};
