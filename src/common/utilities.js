@@ -568,7 +568,7 @@ export const make_slots = (periods) => flatten_array(
     const periods = []
     while (current.isBefore(end)) {
       periods.push({start: previous, end: current, ...period})
-      previous = current
+      previous = moment(current)
       current = moment(current).add(1, 'day')
     }
     periods.push({start: previous, end, ...period})

@@ -24,7 +24,7 @@ export default ({start, end, onClick, color, icon, title, information}) => (
   </PeriodContainer>
 )
 
-export const period_height = 48
+export const period_height = 60
 const status_radius = 40
 export function display_period(start, end) {
   if (end.diff(start, 'hour') == 24) {

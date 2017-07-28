@@ -8,6 +8,7 @@ import {range, capitalize_first_letter, debounce} from 'common/utilities'
 import {color} from 'common/styles'
 import get_week_periods from './get_week_periods'
 import Periods from './periods'
+import {period_height} from './period'
 
 function get_periods(periods, index) {
   return []
@@ -120,7 +121,7 @@ class Week extends Component {
   }
 }
 
-const week_height = 120
+const week_height = 24 + 2 * period_height
 const border = css`solid 1px ${color('black', 'pale')}`
 
 const Container = styled.div`
