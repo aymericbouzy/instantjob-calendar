@@ -126,7 +126,7 @@ class Navigation extends Component {
   }
 
   navigate_to(day) {
-    event_system.post('calendar-week', moment(day).startOf('week'))
+    event_system.post('calendar-week', moment(day))
   }
 
   render() {
@@ -190,4 +190,5 @@ const ToggleFilters = styled.div`
 const NavigationContainer = styled.div`
   display: flex;
   align-items: center;
+  user-select: none;
 `
