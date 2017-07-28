@@ -30,12 +30,19 @@ export function display_period(start, end) {
   if (end.diff(start, 'hour') == 24) {
     return 'Toute la journée'
   }
+  function format_time(time) {
+    const hours = time.hours()
+    const result = `${hours}h`
+    if (time.minutes()) {
+      return `${result}${time.format('mm')}`
+    }
+    if (hours == 0) {
+      return 'minuit'
+    }
+    return result
+  }
   end = moment(end).add(1, 'second').startOf('minute')
-  const start_hour = start.hours()
-  const end_hour = end.hours() + 24 * end.diff(moment(start).startOf('day'), 'days')
-  const start_minutes = start.minutes() ? start.format('mm') : ''
-  const end_minutes = end.minutes() ? end.format('mm') : ''
-  return `${start_hour}h${start_minutes} - ${end_hour}h${end_minutes}`
+  return `${format_time(start)} - ${format_time(end)}`
 }
 
 const PeriodContainer = styled.div`
