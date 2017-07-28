@@ -7,10 +7,10 @@ import moment from 'common/moment'
 import tolerant_selector from 'common/tolerant_selector'
 import Period from './period'
 
-const get_children_periods = tolerant_selector(
+const get_periods = tolerant_selector(
   [property_getter('children'), property_getter('render_shift')],
   (children, render_shift) => flatten_array(children.map(
-    ({events, ...child}) => make_periods(hash_with_key(events)).map(({start, end}) => ({
+    ({events, ...child}) => make_slots(make_periods(hash_with_key(events))).map(({start, end}) => ({
       ...child,
       start,
       end,
@@ -22,11 +22,6 @@ const get_children_periods = tolerant_selector(
       },
     }))
   ))
-)
-
-const get_periods = tolerant_selector(
-  [get_children_periods],
-  (periods) => make_slots(periods)
 )
 
 const get_week_periods = make_memoized((week_value) => {
