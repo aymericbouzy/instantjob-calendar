@@ -538,7 +538,7 @@ export function intersecting_periods_interval(periods, start, end) {
 }
 
 export const make_periods = (events) => {
-  let events_array = array_from_hash(events)
+  let events_array = events
   if (events_array.length == 0) {
     return []
   } else {

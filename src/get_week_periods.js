@@ -7,10 +7,10 @@ import moment from 'common/moment'
 import tolerant_selector from 'common/tolerant_selector'
 import Period from './period'
 
-const get_periods = tolerant_selector(
+export const get_periods = tolerant_selector(
   [property_getter('children'), property_getter('render_shift')],
   (children, render_shift) => flatten_array(children.map(
-    ({events, ...child}) => make_slots(make_periods(hash_with_key(events))).map(({start, end}) => ({
+    ({events, ...child}) => make_slots(make_periods(events)).map(({start, end}) => ({
       ...child,
       start,
       end,

@@ -3,6 +3,7 @@ import sinon from 'sinon'
 import moment from 'common/moment'
 
 import {make_slots} from 'common/utilities'
+import {get_periods} from '../get_week_periods'
 
 describe('make_slots', () => {
   it('is correct for one event', () => {
@@ -53,5 +54,18 @@ describe('make_slots', () => {
     }]
     const slots = make_slots(periods)
     expect(slots[0].foo).to.equal('bar')
+  })
+})
+
+describe('get_periods', () => {
+  it('should make 4 periods', () => {
+    const week = moment('2017-11-27T00:00:00.000+01:00')
+    const events = [
+      {start: moment(week).add(20, 'hours'), end: moment(week).add(24, 'hours')},
+      {start: moment(week).add(24, 'hours'), end: moment(week).add(30, 'hours')},
+      {start: moment(week).add(70, 'hours'), end: moment(week).add(80, 'hours')},
+    ]
+    const periods = get_periods({children: [{events}]})
+    expect(periods.length).to.equal(4)
   })
 })
