@@ -15,7 +15,7 @@ export default class Periods extends Component {
   render_period(period, id) {
     const {extended} = this.props
     return (
-      <PeriodWrapper key={id}>
+      <PeriodWrapper extended={extended} key={id}>
         {period.render(extended)}
       </PeriodWrapper>
     )
@@ -76,7 +76,7 @@ const Ellipsis = styled.div`
   font-size: 18px;
 `
 const PeriodWrapper = styled.div`
-  height: ${period_height}px;
+  ${({extended}) => !extended && `height: ${period_height}px;` }
   position: relative;
   border-bottom: solid 1px ${color('black', 'translucent')};
 
