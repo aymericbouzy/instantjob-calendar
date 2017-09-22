@@ -14,9 +14,9 @@ export const get_periods = tolerant_selector(
       ...child,
       start,
       end,
-      render() {
+      render(extended) {
         if (typeof render_shift === 'function') {
-          return render_shift(child, {start, end})
+          return render_shift(child, {start, end, extended})
         }
         return <Period {...({...child, start, end})} />
       },

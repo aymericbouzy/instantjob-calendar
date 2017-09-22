@@ -67,7 +67,7 @@ class Day extends Component {
           </FullDate>
         </Header>
         <Content>
-          <Periods periods={periods} />
+          <Periods periods={periods} extended/>
         </Content>
       </DayContainer>
     )

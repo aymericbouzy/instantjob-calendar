@@ -13,9 +13,10 @@ export default class Periods extends Component {
   }
 
   render_period(period, id) {
+    const {extended} = this.props
     return (
       <PeriodWrapper key={id}>
-        {period.render()}
+        {period.render(extended)}
       </PeriodWrapper>
     )
   }
