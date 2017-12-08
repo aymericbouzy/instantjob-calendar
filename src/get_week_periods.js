@@ -1,7 +1,7 @@
 import React from 'react'
 import {
   make_memoized, property_getter, range, hash_with_key, flatten_array, split_array,
-  find_optimum_in_sorted_array, make_periods, make_slots,
+  find_optimum_in_sorted_array, make_periods, make_slots, compare_date,
 } from 'common/utilities'
 import moment from 'common/moment'
 import tolerant_selector from 'common/tolerant_selector'
@@ -21,7 +21,7 @@ export const get_periods = tolerant_selector(
         return <Period {...({...child, start, end})} />
       },
     }))
-  ))
+  )).sort(compare_date(child => child.start, true))
 )
 
 const get_week_periods = make_memoized((week_value) => {

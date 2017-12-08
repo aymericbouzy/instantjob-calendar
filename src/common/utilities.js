@@ -575,3 +575,29 @@ export const make_slots = (periods) => flatten_array(
     return periods
   })
 )
+
+export const compare_date = (getDate, ascending) => {
+  const ascendingValue = ascending ? 1 : -1
+  return (a, b) => {
+    const dateA = getDate(a)
+    const dateB = getDate(b)
+    if (!dateA) {
+      if (!dateB) {
+        return 0
+      }
+      return 1
+    }
+    if (!dateB) {
+      return -1
+    }
+    const momentA = moment(dateA)
+    const momentB = moment(dateB)
+    if (momentA.isBefore(momentB)) {
+      return -ascendingValue
+    }
+    if (momentA.isSame(momentB)) {
+      return 0
+    }
+    return ascendingValue
+  }
+}

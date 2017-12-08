@@ -58,8 +58,9 @@ describe('make_slots', () => {
 })
 
 describe('get_periods', () => {
+  const week = moment('2017-11-27T00:00:00.000+01:00')
+
   it('should make 4 periods', () => {
-    const week = moment('2017-11-27T00:00:00.000+01:00')
     const events = [
       {start: moment(week).add(20, 'hours'), end: moment(week).add(24, 'hours')},
       {start: moment(week).add(24, 'hours'), end: moment(week).add(30, 'hours')},
@@ -67,5 +68,30 @@ describe('get_periods', () => {
     ]
     const periods = get_periods({children: [{events}]})
     expect(periods.length).to.equal(4)
+  })
+
+  it('should sort by start', () => {
+    const missions = [
+      {
+        events: [
+          {
+            start: moment(week).add(5, 'hours'),
+            end: moment(week).add(8, 'hours'),
+          }
+        ]
+      },
+      {
+        events: [
+          {
+            start: moment(week).add(2, 'hours'),
+            end: moment(week).add(5, 'hours'),
+          }
+        ]
+      },
+    ]
+    const periods = get_periods({
+      children: missions,
+    })
+    expect(periods[0].start.isSame(missions[1].events[0].start)).to.equal(true)
   })
 })
