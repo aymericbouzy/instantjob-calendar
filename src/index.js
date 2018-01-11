@@ -42,6 +42,8 @@ export default class Calendar extends Component {
       return {}
     },
     initial_view: 'month',
+    hide_navigation: false,
+    load_between: () => {}
   }
 
   show_month() {
@@ -53,22 +55,26 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const {children, className, style, render_shift} = this.props
+    const {children, className, style, render_shift, hide_navigation, load_between} = this.props
     const {month_view} = this.state
     const View = month_view ? Month : Week
     return (
       <Container className={className} style={style}>
         <Header>
-          <Action onClick={this.show_month} selected={month_view}>
-            Mois
-          </Action>
-          <Action onClick={this.show_week} selected={!month_view}>
-            Semaine
-          </Action>
+          {hide_navigation ? null : (
+            <Action onClick={this.show_month} selected={month_view}>
+              Mois
+            </Action>
+          )}
+          {hide_navigation ? null : (
+            <Action onClick={this.show_week} selected={!month_view}>
+              Semaine
+            </Action>
+          )}
           <Navigation month_view={month_view}/>
           {children}
         </Header>
-        <View render_shift={render_shift}>
+        <View render_shift={render_shift} load_between={load_between}>
           {get_missions(this.props)}
         </View>
       </Container>

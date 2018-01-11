@@ -20,6 +20,7 @@ export default class Week extends Component {
   componentDidMount() {
     this.stop_retrieving_calendar_week = event_system.retrieve('calendar-week', (week) => {
       this.setState({week})
+      this.props.load_between({start: this.start(), end: this.end()})
     })
   }
 
@@ -27,8 +28,16 @@ export default class Week extends Component {
     this.stop_retrieving_calendar_week()
   }
 
+  start() {
+    return moment(this.state.week).startOf('week')
+  }
+
+  end() {
+    return moment(this.state.week).endOf('week')
+  }
+
   get_days() {
-    const start = moment(this.state.week).startOf('week')
+    const start = this.start()
     return get_week_periods(start)(this.props).map((periods, index) => ({
       periods,
       date: moment(start).add(index, 'day'),
